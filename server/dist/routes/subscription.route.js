@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const subscription_controller_1 = require("../controllers/subscription.controller");
+const auth_1 = require("../middleware/auth");
+const validate_1 = require("../utils/validate");
+const subscription_schema_1 = require("../schemas/subscription.schema");
+const router = (0, express_1.Router)();
+router.post("/:planId", auth_1.requireAuth, (0, validate_1.validate)(subscription_schema_1.subscribeSchema), subscription_controller_1.subscribe);
+router.get("/me", auth_1.requireAuth, subscription_controller_1.mySubscription);
+exports.default = router;
