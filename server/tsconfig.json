@@ -9,5 +9,6 @@
     "skipLibCheck": true
   },
   "include": ["src/**/*"],
-  "exclude": ["prisma/**/*", "prisma.config.ts"]
+  "exclude": ["prisma/**/*", "prisma.config.ts"],
+   "typeRoots": ["./src/types", "./node_modules/@types"]
 }
