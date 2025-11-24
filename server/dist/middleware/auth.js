@@ -7,6 +7,7 @@ exports.requireAuth = requireAuth;
 exports.requireRole = requireRole;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = require("../config");
+// Verify JWT access token
 function requireAuth(req, res, next) {
     const header = req.headers.authorization;
     if (!header?.startsWith("Bearer "))
@@ -21,6 +22,7 @@ function requireAuth(req, res, next) {
         return res.status(401).json({ message: "Invalid or expired token" });
     }
 }
+// Role-based authorization
 function requireRole(role) {
     return (req, res, next) => {
         const user = req.user;

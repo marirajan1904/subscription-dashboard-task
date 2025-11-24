@@ -3,8 +3,8 @@ import { store } from "../app/store";
 import { setAccessToken, logout } from "../features/auth/authSlice";
 
 const api = axios.create({
-  baseURL: "https://subscription-dashboard-task-1-fo2a.onrender.com/api",
-  withCredentials: true, // send cookies
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:4000/api",
+  withCredentials: true,
 });
 
 // Add Authorization header

@@ -20,7 +20,7 @@ app.use(cors({
   ],
   credentials: true, // allow cookies
 }));
-
+app.options("*", cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));

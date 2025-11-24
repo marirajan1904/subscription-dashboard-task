@@ -6,12 +6,10 @@
     "outDir": "dist",
     "esModuleInterop": true,
     "strict": true,
-    "skipLibCheck": true,            // ignores type errors in node_modules
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,       // allows importing JSON files
-    "moduleResolution": "node",      // helps TypeScript find node_modules types
-    "types": ["node", "express", "cookie-parser", "jsonwebtoken"] // include these types
+    "skipLibCheck": true,
+    "types": ["node"]     // ← add this line
   },
   "include": ["src/**/*"],
-  "exclude": ["prisma/**/*", "prisma.config.ts"]
+  "exclude": ["prisma/**/*", "prisma.config.ts"],
+  "typeRoots": ["./src/types", "./node_modules/@types"]
 }

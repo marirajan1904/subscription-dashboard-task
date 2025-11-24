@@ -13,6 +13,7 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const tokens_1 = require("../utils/tokens");
 const config_1 = require("../config");
 const prisma = new client_1.PrismaClient();
+// REGISTER
 async function register(req, res) {
     const { name, email, password } = req.body;
     const existing = await prisma.user.findUnique({ where: { email } });
@@ -22,8 +23,12 @@ async function register(req, res) {
     const user = await prisma.user.create({
         data: { name, email, password: hashed, role: "USER" },
     });
-    res.status(201).json({ message: "Registered successfully", user: { id: user.id, name: user.name, email: user.email } });
+    res.status(201).json({
+        message: "Registered successfully",
+        user: { id: user.id, name: user.name, email: user.email },
+    });
 }
+// LOGIN
 async function login(req, res) {
     const { email, password } = req.body;
     const user = await prisma.user.findUnique({ where: { email } });
@@ -35,19 +40,21 @@ async function login(req, res) {
     const payload = { sub: user.id, role: user.role, email: user.email };
     const accessToken = (0, tokens_1.signAccessToken)(payload);
     const refreshToken = (0, tokens_1.signRefreshToken)(payload);
+    // Set refresh token as httpOnly cookie
     res.cookie("refresh_token", refreshToken, {
         httpOnly: true,
-        secure: config_1.config.isProd,
+        secure: config_1.config.isProd && process.env.NODE_ENV === "production",
         sameSite: "lax",
-        domain: config_1.config.cookieDomain,
+        domain: config_1.config.isProd ? config_1.config.cookieDomain : undefined,
         path: "/",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
     res.json({
         accessToken,
         user: { id: user.id, name: user.name, email: user.email, role: user.role.toLowerCase() },
     });
 }
+// REFRESH TOKEN
 async function refreshToken(req, res) {
     const token = req.cookies?.refresh_token;
     if (!token)
@@ -61,18 +68,22 @@ async function refreshToken(req, res) {
         res.status(401).json({ message: "Invalid refresh token" });
     }
 }
+// LOGOUT
 async function logout(req, res) {
     res.clearCookie("refresh_token", {
         httpOnly: true,
-        secure: config_1.config.isProd,
+        secure: config_1.config.isProd && process.env.NODE_ENV === "production",
         sameSite: "lax",
-        domain: config_1.config.cookieDomain,
+        domain: config_1.config.isProd ? config_1.config.cookieDomain : undefined,
         path: "/",
     });
     res.json({ message: "Logged out" });
 }
+// GET CURRENT USER
 async function me(req, res) {
     const userToken = req.user;
+    if (!userToken)
+        return res.status(401).json({ message: "Unauthorized" });
     const user = await prisma.user.findUnique({ where: { id: userToken.sub } });
     if (!user)
         return res.status(404).json({ message: "User not found" });
