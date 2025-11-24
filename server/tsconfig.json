@@ -10,6 +10,5 @@
     "types": ["node"]     // ← add this line
   },
   "include": ["src/**/*"],
-  "exclude": ["prisma/**/*", "prisma.config.ts"],
-  "typeRoots": ["./src/types", "./node_modules/@types"]
+  "exclude": ["prisma/**/*", "prisma.config.ts"]
 }
