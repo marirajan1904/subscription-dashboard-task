@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      "/api": "https://subscription-dashboard-task-1-fo2a.onrender.com",
+      "/api": "https://subscription-dashboard-task-1-88gd.onrender.com",
     },
   },
 });
