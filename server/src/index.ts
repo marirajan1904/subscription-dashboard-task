@@ -13,7 +13,14 @@ import { config } from "./config";
 const app = express();
 
 app.use(helmet());
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({
+  origin: [
+    "http://localhost:5173", // local dev
+    "https://subscription-dashboard-task.vercel.app" // deployed frontend
+  ],
+  credentials: true, // allow cookies
+}));
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));

@@ -4,9 +4,11 @@ import { config } from "../config";
 
 export type Role = "USER" | "ADMIN";
 
+// Verify JWT access token
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
   const header = req.headers.authorization;
   if (!header?.startsWith("Bearer ")) return res.status(401).json({ message: "Unauthorized" });
+
   const token = header.split(" ")[1];
   try {
     const payload = jwt.verify(token, config.accessSecret) as any;
@@ -17,6 +19,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+// Role-based authorization
 export function requireRole(role: Role) {
   return (req: Request, res: Response, next: NextFunction) => {
     const user = (req as any).user;
