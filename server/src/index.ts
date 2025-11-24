@@ -16,7 +16,7 @@ app.use(helmet());
 app.use(cors({
   origin: [
     "http://localhost:5173", // local dev
-    "https://subscription-dashboard-task.vercel.app" // deployed frontend
+    "https://subscription-dashboard-task-2.onrender.com" // deployed frontend
   ],
   credentials: true, // allow cookies
 }));

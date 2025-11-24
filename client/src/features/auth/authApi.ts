@@ -1,5 +1,5 @@
 import api from "../../utils/axios";
-import { loginSuccess, logout, setAccessToken } from "./authSlice";
+import { loginSuccess, logout } from "./authSlice";
 
 // LOGIN
 export async function login(dispatch: any, payload: { email: string; password: string }) {
